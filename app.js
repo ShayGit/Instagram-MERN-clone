@@ -4,9 +4,6 @@ const PORT = process.env.PORT || 5000;
 const mongoose = require('mongoose');
 const {MONGOURI}= require('./config/keys');
 
-
-
-
 mongoose.connect(MONGOURI,
     { useUnifiedTopology: true,
         useNewUrlParser: true }
