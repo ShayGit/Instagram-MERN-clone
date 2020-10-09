@@ -5,8 +5,10 @@ import {Context as AuthContext} from "./context/AuthContext"
 import CreatePost from "./screens/CreatePost";
 import FollowedUsersPosts from "./screens/FollowedUsersPosts";
 import Home from "./screens/Home";
+import NewPassword from "./screens/NewPassword";
 import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./screens/Profile";
+import Reset from "./screens/Reset";
 import Signin from "./screens/Signin";
 import Signup from "./screens/Signup";
 import UserProfile from "./screens/UserProfile";
@@ -25,6 +27,7 @@ const Routing = () => {
       }
       else{
         setUserAndToken({ user:null, token:"" });
+        if(!history.location.pathname.startsWith('/reset'))
         history.push('/signin')
       }
     }, []);
@@ -47,6 +50,12 @@ const Routing = () => {
         <PrivateRoute path="/myFollowingsPosts">
           <FollowedUsersPosts />
         </PrivateRoute>
+        <Route exact path="/reset">
+          <Reset />
+        </Route>
+        <Route path="/reset/:token">
+          <NewPassword />
+        </Route>
         <Route path="/signin">
           <Signin />
         </Route>

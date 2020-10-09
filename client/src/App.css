@@ -34,7 +34,8 @@ a{
 }
 
 .item{
-  width: 30%
+  width: 30%;
+ margin-bottom: 20px;
 }
 
 .home-card{
@@ -55,4 +56,12 @@ a{
 
 .loading{
   text-align: center;
+}
+
+.collection-item:hover{
+  cursor: pointer;
+}
+
+.collection-item{
+width: 100%
 }

@@ -10,6 +10,7 @@ const CreatePost = () => {
   const [image, setImage] = useState("");
   const [url, setUrl] = useStateCallback("");
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
 
   const postDetails = async () => {
     try{
@@ -46,8 +47,10 @@ const CreatePost = () => {
           history.push('/')
         }
       } );
+      setLoading(false);
     }
     catch (err) {
+      setLoading(false);
       console.log(err);
     }
   };
@@ -55,6 +58,9 @@ const CreatePost = () => {
 
  
   return (
+    loading ? (
+        <h2 className="loading"> loading... </h2>
+     ) :
     <div
       className="card input-field"
       style={{
@@ -86,11 +92,14 @@ const CreatePost = () => {
         </div>
       </div>
       <button className="btn waves-effect waves-light #64b5f6 blue darken-1"
-      onClick={()=>postDetails()}>
+      onClick={()=>{
+        setLoading(true);
+        postDetails();
+      }}>
         Upload Post
       </button>
     </div>
-  );
+    );
 };
 
 export default CreatePost;

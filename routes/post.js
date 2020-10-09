@@ -9,7 +9,9 @@ const requireAuth = require("../middleware/requireAuth");
 
 router.get("/allposts",requireAuth, (req, res) => {
     Post.find().populate("postedBy",'_id name image')
-    .populate("comments.postedBy","_id name").then(posts=>{
+    .populate("comments.postedBy","_id name")
+    .sort('-createdAt')
+    .then(posts=>{
         res.json({posts})
     }).catch(err =>console.log(err))
    
@@ -17,7 +19,9 @@ router.get("/allposts",requireAuth, (req, res) => {
 
   router.get("/followingPosts",requireAuth, (req, res) => {
     Post.find({postedBy:{$in:req.user.following}}).populate("postedBy",'_id name image')
-    .populate("comments.postedBy","_id name").then(posts=>{
+    .populate("comments.postedBy","_id name")
+    .sort('-createdAt')
+    .then(posts=>{
         res.json({posts})
     }).catch(err =>console.log(err))
    
@@ -100,8 +104,8 @@ router.post("/createpost",requireAuth, (req, res) => {
                 $push:{comments: comment}
         },{
             new:true
-        }).populate("comments.postedBy","_id name image")
-        .populate("postedBy","_id name").exec((err,result)=>{
+        }).populate("comments.postedBy","_id name")
+        .populate("postedBy","_id name image").exec((err,result)=>{
             if(err){
                 return res.status(422).json({error:err})
             }

@@ -9,7 +9,7 @@ const FollowedUsersPosts = () => {
   const [postsData, setPostsData] = useState([]);
 
   const {
-    state: { token },
+    state: { token, user },
   } = useContext(AuthContext);
 
   useEffect(() => {
@@ -27,10 +27,13 @@ const FollowedUsersPosts = () => {
     return () => {};
   }, []);
 
-
-  return (
+  return(
+    (user && postsData) ?
     <PostsDashboard postsData={postsData} setPostsData={setPostsData}/>
+    :
+    null
   )
+ 
 };
 
 export default FollowedUsersPosts;

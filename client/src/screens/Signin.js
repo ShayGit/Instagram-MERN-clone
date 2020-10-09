@@ -2,7 +2,6 @@ import { Link, useHistory } from "react-router-dom";
 import React, { useContext, useState } from "react";
 
 import { Context as AuthContext } from "../context/AuthContext";
-import M from "materialize-css";
 
 const Signin = () => {
   const [password, setPassword] = useState("");
@@ -35,6 +34,9 @@ const Signin = () => {
         <h5>
           <Link to="/signup">Dont have an account?</Link>
         </h5>
+        <h6>
+          <Link to="/reset">Forgot password?</Link>
+        </h6>
       </div>
     </div>
   );

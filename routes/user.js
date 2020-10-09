@@ -70,12 +70,24 @@ router.put('/updateImage', requireAuth, async (req, res)=>{
     try{
         const result = await User.findByIdAndUpdate(req.user._id,
             {$set: {image: req.body.image}},
-            {new: true});
+            {new: true}).select("-password");
             res.json(result);
     }
-   catch{
+   catch(err){
     return res.status(422).json({error:"cannot update photo"});
 
+   }
+})
+
+router.post('/searchUsers', requireAuth, async (req, res)=>{
+    try{
+        let userPattern = new RegExp("^"+req.body.query)
+
+        const users = await User.find({email:{$regex:userPattern}}).select("_id email");
+        res.json({users});
+    }
+   catch(err){
+    console.log(err);
    }
 })
 module.exports = router;
