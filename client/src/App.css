@@ -3,8 +3,9 @@ a{
   color: black !important
 }
 
-.brand-logo, h2{
+.logo, h2{
   font-family: 'Grand Hotel', cursive;
+  font-size: 24px;
 }
 
 .mycard{
@@ -64,4 +65,67 @@ a{
 
 .collection-item{
 width: 100%
+}
+
+.navbar-main{
+  display: flex;
+  background-color: white;
+  align-items: center;
+  width: 100%}
+.nav-ul{
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+.nav-li{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-li:hover{
+  background-color: white;
+}
+
+.profile-navlink{
+  height: 28px;
+  width: 28px;
+  border-radius: 14px;
+}
+.profile-navlink-selected{
+  height: 30px;
+  padding: 1px;
+  width: 30px;
+  border-radius: 15px;
+  border: solid #000;
+  border-width: 2px;
+}
+
+.icon{
+  color:black;
+  font-size: 28px
+}
+
+@media all and (max-width: 400px) {  
+  .nav-ul {  
+    flex-wrap: wrap;  
+  }  
+  .navbar-main{
+    min-height: 100px;
+  }
+  .nav-ul > li {  
+    flex-basis: 50%;  
+  }
+
+}
+@media all and (max-width: 150px) {  
+  .nav-ul > li {  
+    flex-basis: 100%;  
+  }  
+  .nav-ul {  
+    flex-wrap: wrap;  
+  }  
+  .navbar-main{
+    min-height: 150px;
+  }
 }

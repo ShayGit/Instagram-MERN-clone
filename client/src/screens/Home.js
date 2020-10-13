@@ -14,7 +14,10 @@ const Home = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch("/allposts", {
+      // const res = await fetch("/allposts", {
+      //   headers: { Authorization: "Bearer " + token },
+      // });
+      const res = await fetch("/followingPosts", {
         headers: { Authorization: "Bearer " + token },
       });
       const data = await res.json();
