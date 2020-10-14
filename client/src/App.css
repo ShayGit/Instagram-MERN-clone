@@ -5,7 +5,7 @@ a{
 
 .logo, h2{
   font-family: 'Grand Hotel', cursive;
-  font-size: 24px;
+  font-size: 50px;
 }
 
 .mycard{
@@ -31,12 +31,13 @@ a{
 .gallery{
   display: flex;
   flex-wrap: wrap;
-  justify-content:space-around;
+  justify-content: flex-start;
 }
 
 .item{
-  width: 30%;
- margin-bottom: 20px;
+  height: 190px;
+  width: 190px;
+ margin: 5px 5px 5px 5px;
 }
 
 .home-card{
@@ -112,9 +113,10 @@ width: 100%
   }  
   .navbar-main{
     min-height: 100px;
+
   }
   .nav-ul > li {  
-    flex-basis: 50%;  
+    flex-basis: 20%;  
   }
 
 }

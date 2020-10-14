@@ -20,69 +20,72 @@ const transporter = nodemailer.createTransport(sendgridTransport({
 }))
 
 
-router.post("/signup", (req, res) => {
-  const { name, email, password, image } = req.body;
-  if (!email || !password || !name) {
+router.post("/signup", async (req, res) => {
+  try{
+
+  const { name,username, email, password, image } = req.body;
+  if (!email || !password || !name || !username) {
     return res.status(422).json({ error: "please add all the fields" });
   }
-  User.findOne({ email: email })
-    .then((savedUser) => {
-      if (savedUser) {
+  const savedUsers = await User.find({$or:[{username: username}, {email: email}]});
+  if(savedUsers)
+  {
+      if(savedUsers.find(user => user.email === email))
+      {
         return res
-          .status(422)
-          .json({ error: "user already exists with that email" });
+                 .status(422)
+                 .json({ error: "user already exists with that email" });
       }
-      bcrypt.hash(password, 12).then((hashedPassword) => {
+      else if(savedUsers.find(user => user.username === username))
+      {
+        return res
+                 .status(422)
+                 .json({ error: "username already exists" });
+      }
+    }
+      const hashedPassword = await bcrypt.hash(password, 12);
         const user = new User({
           email,
+          username,
           password: hashedPassword,
           name,
           image
         });
-
-        user
-          .save()
-          .then((user) => {
-            transporter.sendMail({ 
-              to: user.email,
-              from: EMAIL,
-              subject: "Signup success",
-              html: "<h1>Welcome to instagram clone! Have a good time.</h1>"
-            })
-            res.json({ message: "saved successfully" });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+        const userSavedInDb = await user.save()
+        transporter.sendMail({ 
+          to: userSavedInDb.email,
+          from: EMAIL,
+          subject: "Signup success",
+          html: "<h1>Welcome to instagram clone! Have a good time.</h1>"
+        })
+        res.json({ message: "saved successfully" });
+  }catch(err) {
+    console.log(err);
+    return res.status(500).json({ error: "internal service error" });
+  }
 });
 
 
 router.post('/signin', (req,res)=>{
-    let {email,password} =  req.body;
+    let {username,password} =  req.body;
 
-    if(!email || !password){
-        return res.status(422).json({error:"please add email or password"})
+    if(!username || !password){
+        return res.status(422).json({error:"please add username or password"})
     }
-    User.findOne({email:email}).then(savedUser=>{
+    User.findOne({username:username}).then(savedUser=>{
         if(!savedUser){
-            res.status(422).json({error:"Invalid Email or password"})
+            res.status(422).json({error:"Invalid Username or password"})
         }
         bcrypt.compare(password,savedUser.password).then(isMatch =>{
             if(isMatch){
-               // res.json({message: "successfully signed in"})
             const token = jwt.sign({_id:savedUser._id}, JWT_SECRET)
-            const {_id,name,email,image,followers, following} =savedUser;
+            const {_id,name,username,email,image,followers, following} =savedUser;
               console.log(savedUser)
-            res.json({token, user:{_id,name,email,followers,following, image}})
+            res.json({token, user:{_id,name,username,email,followers,following, image}})
 
         }
             else{
-                return res.status(422).json({error:"Invalid Email or password"})
+                return res.status(422).json({error:"Invalid Username or password"})
             }
         }).catch(err=>{
             console.log(err);

@@ -5,7 +5,7 @@ import { Context as AuthContext } from "../context/AuthContext";
 
 const Signin = () => {
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const history = useHistory();
   const { signin } = useContext(AuthContext);
 
@@ -15,9 +15,9 @@ const Signin = () => {
         <h2>Instagram</h2>
         <input
           type="text"
-          placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          placeholder="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
@@ -27,7 +27,7 @@ const Signin = () => {
         />
         <button
           className="btn waves-effect waves-light #64b5f6 blue darken-1"
-          onClick={() => signin({email,password})}
+          onClick={() => signin({username,password})}
         >
           Sign in
         </button>

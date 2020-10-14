@@ -6,6 +6,7 @@ import useStateCallback from "../custom_hooks/useStateCallback";
 
 const Signin = () => {
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [image, setImage] = useState("");
@@ -39,12 +40,14 @@ const Signin = () => {
     imageUrl
       ? (body = JSON.stringify({
           name,
+          username,
           password,
           email,
           image: imageUrl,
         }))
       : (body = JSON.stringify({
           name,
+          username,
           password,
           email,
         }));
@@ -101,6 +104,12 @@ const Signin = () => {
           placeholder="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="text"

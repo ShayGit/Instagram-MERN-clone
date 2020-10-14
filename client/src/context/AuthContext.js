@@ -24,16 +24,9 @@ const authReducer = (state, action) => {
   }
 };
 
-const signin = (dispatch) => async ({ email, password }) => {
+const signin = (dispatch) => async ({ username, password }) => {
   try {
-    if (
-      !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-        email
-      )
-    ) {
-      M.toast({ html: "invalid Email", classes: "xc62828 red darken-3" });
-      return;
-    }
+    
     const result = await fetch("/signin", {
       method: "post",
       headers: {
@@ -41,7 +34,7 @@ const signin = (dispatch) => async ({ email, password }) => {
       },
       body: JSON.stringify({
         password,
-        email,
+        username,
       }),
     });
     const data = await result.json();
