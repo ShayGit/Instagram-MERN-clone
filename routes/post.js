@@ -51,7 +51,9 @@ router.post("/createpost",requireAuth, (req, res) => {
 
 
   router.get('/myposts',requireAuth, (req,res)=>{
-      Post.find({postedBy:req.user._id}).populate('postedBy', '_id name')
+      Post.find({postedBy:req.user._id}).populate("postedBy",'_id name image')
+      .populate("comments.postedBy","_id name")
+      .sort('-createdAt')
       .then(myposts=>{
             res.json({myposts})
       })

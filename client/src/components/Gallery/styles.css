@@ -1,0 +1,13 @@
+.gallery{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+
+  .item{
+    height: 190px;
+    width: 190px;
+   margin: 5px 5px 5px 5px;
+  }
+

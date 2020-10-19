@@ -10,7 +10,9 @@ router.get('/user/:id', requireAuth,async (req, res) => {
     try{
         const userId = req.params.id;
         const user = await User.findById(userId).select("-password");
-        const posts = await Post.find({postedBy:userId}).populate("postedBy","_id name")
+        const posts = await Post.find({postedBy:userId}).populate("postedBy",'_id name image')
+        .populate("comments.postedBy","_id name")
+        .sort('-createdAt')
         res.json({user,posts});
         
     }

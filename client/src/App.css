@@ -27,19 +27,6 @@ a{
   box-shadow: 0 1px 0 0 rgb(8, 93, 252) !important;
 }
 
-
-.gallery{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
-.item{
-  height: 190px;
-  width: 190px;
- margin: 5px 5px 5px 5px;
-}
-
 .home-card{
   max-width: 500px;
   height: max-content;

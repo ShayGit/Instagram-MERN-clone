@@ -1,13 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import { Context as AuthContext } from "../context/AuthContext";
-import ProfileHeader from '../components/ProfileHeader'
+import { BiArrowBack } from "react-icons/bi";
+import Gallery from "../components/Gallery";
+import { Link } from "react-router-dom";
+import PostsDashboard from "../components/PostsDashboard";
+import PrivateRoute from "../components/PrivateRoute";
+import ProfileHeader from "../components/ProfileHeader";
+import ProfilePostsDashboard from "../components/ProfilePostsDashboard";
+import { Switch } from "react-router";
 import useStateCallback from "../custom_hooks/useStateCallback";
 
 const Profile = () => {
   const {
     state: { token, user },
-    updateUserPhoto
+    updateUserPhoto,
   } = useContext(AuthContext);
   const [myPosts, setMyPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -26,9 +33,9 @@ const Profile = () => {
     });
   }, []);
 
-  const updatePhoto = async(file)=>{
+  const updatePhoto = async (file) => {
     try {
-      if(file){
+      if (file) {
         const data = new FormData();
         data.append("file", file);
         data.append("upload_preset", "insta-clone");
@@ -41,20 +48,23 @@ const Profile = () => {
           }
         );
         const resData = await res.json();
-          setUrl(resData.url, async (urlState) => {
-           const res = await fetch("/updateImage", {
-             method: "put",
-            headers: { 
+        setUrl(resData.url, async (urlState) => {
+          const res = await fetch("/updateImage", {
+            method: "put",
+            headers: {
               "Content-Type": "application/json",
-              "Authorization": "Bearer " + token 
+              Authorization: "Bearer " + token,
             },
-            body: JSON.stringify({image:urlState})
+            body: JSON.stringify({ image: urlState }),
           });
           const data = await res.json();
           console.log(data);
-          localStorage.setItem("user",JSON.stringify({...user,image:data.image}))
-           updateUserPhoto(data.image);
-          });
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ ...user, image: data.image })
+          );
+          updateUserPhoto(data.image);
+        });
       }
       setLoading(false);
     } catch (err) {
@@ -63,24 +73,31 @@ const Profile = () => {
     }
   };
 
+  const GalleryType = () => {
+    return (
+      <Switch>
+        <PrivateRoute exact path="/profile">
+          <Gallery posts={myPosts} />
+        </PrivateRoute>
+        <PrivateRoute exact path="/profile/image/:imageIndex">
+         <ProfilePostsDashboard posts={myPosts} setPosts={setMyPosts} />
+        </PrivateRoute>
+      </Switch>
+    );
+  };
   return (
     <>
-      {user && !loading? (
+      {user && !loading ? (
         <>
-        <div style={{ maxWidth: "600px", margin: "0px auto" }}>
-          <ProfileHeader isMyProfile={true} updatePhoto={updatePhoto} setLoading={setLoading} userInput={user} postsNumber={myPosts.length}/>
-          <div className="gallery">
-            {myPosts.map((post) => {
-              return (
-                <img
-                  key={post._id}
-                  alt={post.title}
-                  className="item"
-                  src={post.image}
-                />
-              );
-            })}
-          </div>
+          <div style={{ maxWidth: "600px", margin: "0px auto" }}>
+            <ProfileHeader
+              isMyProfile={true}
+              updatePhoto={updatePhoto}
+              setLoading={setLoading}
+              userInput={user}
+              postsNumber={myPosts.length}
+            />
+            <GalleryType />
           </div>
         </>
       ) : (

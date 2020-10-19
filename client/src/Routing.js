@@ -44,6 +44,12 @@ const Routing = () => {
         <PrivateRoute path="/create">
           <CreatePost />
         </PrivateRoute>
+        <PrivateRoute exact path="/profile/image/:imageIndex">
+        <Profile />
+        </PrivateRoute>
+        <PrivateRoute exact path="/profile/:userId/image/:imageIndex">
+          <UserProfile />
+        </PrivateRoute>
         <PrivateRoute path="/profile/:userId">
           <UserProfile />
         </PrivateRoute>

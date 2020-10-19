@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 
 import { Context as AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
@@ -8,7 +8,9 @@ const PostsDashboard = ({ postsData, setPostsData }) => {
   const {
     state: { token, user },
   } = useContext(AuthContext);
+    const postRef = useRef(null);
 
+   
   const likePost = async (id) => {
     try {
       const res = await fetch("/like", {
@@ -141,7 +143,7 @@ const PostsDashboard = ({ postsData, setPostsData }) => {
     <div className="home">
       {postsData.map((item) => {
         return (
-          <div className="card home-card" key={item._id}>
+          <div  className="card home-card" key={item._id}>
                
             <h5
               style={{
@@ -157,7 +159,7 @@ const PostsDashboard = ({ postsData, setPostsData }) => {
                 to={
                   user._id !== item.postedBy._id
                     ? "/profile/" + item.postedBy._id
-                    : "/profile/"
+                    : "/profile"
                 }
               >
                   <div style={{display: 'flex', alignItems: 'center'}}>
